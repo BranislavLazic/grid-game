@@ -5,9 +5,15 @@
   min-width: 4rem;
   min-height: 4rem;
   color: white;
+  cursor: pointer;
 }
 
-.cellColored {
+.cellHover {
+  border: 1px solid grey;
+  background-color: #ff8080;
+}
+
+.cellFilled {
   border: 1px solid grey;
   background-color: red;
 }

@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Cell } from './Cell';
+import { useGridContext } from '../../context/GridProvider';
 import styles from './Grid.module.css';
 
 type GridProps = {
   grid: number[][];
 };
 
-const Grid = ({ grid }: GridProps): JSX.Element => {
+const Grid = ({ grid }: GridProps) => {
+  const { setConnectedNodes } = useGridContext();
+  useEffect(() => {
+    setConnectedNodes([]);
+  }, [grid, setConnectedNodes]);
+
   return (
     <div className={styles.grid}>
       {grid.map((row, idxRow) => (
