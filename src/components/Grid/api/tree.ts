@@ -9,26 +9,6 @@ type Tree = {
 
 type Grid = number[][];
 
-class Queue<T> {
-  private store: T[] = [];
-
-  push(val: T) {
-    this.store.push(val);
-  }
-
-  pop(): T | undefined {
-    return this.store.shift();
-  }
-
-  some(f: (arg: T) => boolean): boolean {
-    return this.store.some(f);
-  }
-
-  size(): number {
-    return this.store.length;
-  }
-}
-
 const findAdjacent = ({ row, column }: TreeNode, grid: Grid): TreeNode[] => {
   const gridSize = grid.length;
   let children: TreeNode[] = [];
@@ -49,7 +29,7 @@ const findAdjacent = ({ row, column }: TreeNode, grid: Grid): TreeNode[] => {
 
 export const mapToTree = (grid: Grid, { row, column }: TreeNode): Tree => {
   let tree: Tree = { nodes: [] };
-  let queue = new Queue<TreeNode>();
+  let children: TreeNode[] = [];
   if (row < 0 || row >= grid.length || column < 0 || column >= grid.length) {
     return tree;
   }
@@ -59,11 +39,11 @@ export const mapToTree = (grid: Grid, { row, column }: TreeNode): Tree => {
     const root = { row: row, column: column };
     tree.nodes.push(root);
     // Find adjacent nodes around the root
-    findAdjacent(root, grid).forEach((n) => queue.push(n));
+    findAdjacent(root, grid).forEach((n) => children.push(n));
     // For each adjacent node, find their adjacent nodes and repeat
     // until all nodes are added to the tree
-    while (queue.size() !== 0) {
-      const currentElement = queue.pop();
+    while (children.length !== 0) {
+      const currentElement = children.pop();
       if (currentElement) {
         tree.nodes.push(currentElement);
         findAdjacent(
@@ -79,11 +59,11 @@ export const mapToTree = (grid: Grid, { row, column }: TreeNode): Tree => {
           )
           .forEach((child) => {
             // Push distinct
-            const exists = queue.some(
+            const exists = children.some(
               (node) => node.row === child.row && node.column === child.column
             );
             if (!exists) {
-              queue.push(child);
+              children.push(child);
             }
           });
       }
