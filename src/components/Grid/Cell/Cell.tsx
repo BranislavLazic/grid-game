@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useGridContext } from '../../../context/GridProvider';
 import { mapToTree } from '../api/tree';
 import cx from 'classnames';
@@ -43,7 +43,8 @@ const Cell = ({ cellValue, cellPosition, grid }: CellProps) => {
       if (
         connectedNodes.length > 0 &&
         connectedNodes.some(
-          (n) => n.row === cellPosition.row && n.column === cellPosition.column
+          (node) =>
+            node.row === cellPosition.row && node.column === cellPosition.column
         )
       ) {
         setCellColor(styles.cellHover);
@@ -53,15 +54,20 @@ const Cell = ({ cellValue, cellPosition, grid }: CellProps) => {
     }
   }, [connectedNodes, cellValue, cellPosition]);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (cellValue === 1) {
       setSelectedCell({ row: cellPosition.row, column: cellPosition.column });
-      connectedNodes.length.toString();
       setConnectionsCount(connectedNodes.length.toString());
     }
-  };
+  }, [
+    cellValue,
+    setSelectedCell,
+    setConnectionsCount,
+    cellPosition,
+    connectedNodes
+  ]);
 
-  const handleHover = () => {
+  const handleHover = useCallback(() => {
     if (cellValue === 1) {
       const tree = mapToTree(grid, {
         row: cellPosition.row,
@@ -71,7 +77,7 @@ const Cell = ({ cellValue, cellPosition, grid }: CellProps) => {
     } else {
       setConnectedNodes([]);
     }
-  };
+  }, [cellValue, setConnectedNodes, cellPosition, grid]);
 
   return (
     <div
