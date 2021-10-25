@@ -1,30 +1,41 @@
 import React, { useState } from 'react';
 import { Grid } from './components/Grid';
-import Slider from 'rc-slider';
+import Slider from '@mui/material/Slider';
+import Button from '@mui/material/Button';
+
 import { GridProvider } from './context/GridProvider';
 import styles from './App.module.css';
-import 'rc-slider/assets/index.css';
 
-function App() {
-  const generateRandomGrid = (size: number) => {
-    let grid = [];
-    for (let i = 0; i < size; i++) {
-      let randomRowValues = Math.floor(
-        Math.random() * Math.pow(2, size)
-      ).toString(2);
-      while (randomRowValues.length < size) {
-        randomRowValues = '0' + randomRowValues;
-      }
-      const row = [...randomRowValues].map((value) => Number(value));
-      grid.push(row);
+const generateRandomGrid = (size: number) => {
+  let grid = [];
+  for (let i = 0; i < size; i++) {
+    let randomRowValues = Math.floor(
+      Math.random() * Math.pow(2, size)
+    ).toString(2);
+    while (randomRowValues.length < size) {
+      randomRowValues = '0' + randomRowValues;
     }
-    return grid;
+    const row = [...randomRowValues].map((value) => Number(value));
+    grid.push(row);
+  }
+  return grid;
+};
+
+const App = () => {
+  const defaultSize = 5;
+  const [gridSize, setGridSize] = useState(defaultSize);
+  const [grid, setGrid] = useState(generateRandomGrid(gridSize));
+
+  const handleGenerate = () => {
+    setGrid(generateRandomGrid(gridSize));
   };
 
-  const [grid, setGrid] = useState(generateRandomGrid(10));
-
-  const handleRandomize = () => {
-    setGrid(generateRandomGrid(10));
+  const handleSliderChange = (
+    e: Event,
+    value: number | number[],
+    activeThumb: number
+  ) => {
+    setGridSize(Number(value));
   };
 
   return (
@@ -33,12 +44,24 @@ function App() {
         <div className={styles.innerContainer}>
           <h2>Grid game</h2>
           <Grid grid={grid} />
-          <Slider min={5} max={10} step={1} />
-          <button onClick={handleRandomize}>Randomize</button>
+          <span>Size</span>
+          <Slider
+            defaultValue={defaultSize}
+            step={1}
+            marks
+            min={defaultSize}
+            max={20}
+            onChange={handleSliderChange}
+            getAriaValueText={(v: number) => v.toString()}
+            valueLabelDisplay='auto'
+          />
+          <Button variant='contained' onClick={handleGenerate}>
+            Generate
+          </Button>
         </div>
       </div>
     </GridProvider>
   );
-}
+};
 
 export default App;

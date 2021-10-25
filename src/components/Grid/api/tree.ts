@@ -50,6 +50,9 @@ const findAdjacent = ({ row, column }: TreeNode, grid: Grid): TreeNode[] => {
 export const traverseGrid = (grid: Grid, { row, column }: TreeNode): Tree => {
   let tree: Tree = { nodes: [] };
   let queue = new Queue<TreeNode>();
+  if (row < 0 || row >= grid.length || column < 0 || column >= grid.length) {
+    return tree;
+  }
   const valueAt = grid[row][column];
   if (valueAt === 1) {
     // Add root
@@ -65,20 +68,19 @@ export const traverseGrid = (grid: Grid, { row, column }: TreeNode): Tree => {
         tree.nodes.push(currentElement);
         findAdjacent(
           { row: currentElement.row, column: currentElement.column },
-          grid,
+          grid
         )
           .filter(
             // Filter child nodes if they already exist among tree nodes
             (child) =>
               !tree.nodes.some(
-                (node) =>
-                  node.row === child.row && node.column === child.column,
-              ),
+                (node) => node.row === child.row && node.column === child.column
+              )
           )
           .forEach((child) => {
             // Push distinct
             const exists = queue.some(
-              (node) => node.row === child.row && node.column === child.column,
+              (node) => node.row === child.row && node.column === child.column
             );
             if (!exists) {
               queue.push(child);
