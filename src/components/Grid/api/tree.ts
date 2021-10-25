@@ -47,7 +47,7 @@ const findAdjacent = ({ row, column }: TreeNode, grid: Grid): TreeNode[] => {
   return children.filter((child) => grid[child.row][child.column]);
 };
 
-export const traverseGrid = (grid: Grid, { row, column }: TreeNode): Tree => {
+export const mapToTree = (grid: Grid, { row, column }: TreeNode): Tree => {
   let tree: Tree = { nodes: [] };
   let queue = new Queue<TreeNode>();
   if (row < 0 || row >= grid.length || column < 0 || column >= grid.length) {

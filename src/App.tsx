@@ -48,9 +48,8 @@ const App = () => {
           <Slider
             defaultValue={defaultSize}
             step={1}
-            marks
             min={defaultSize}
-            max={20}
+            max={30}
             onChange={handleSliderChange}
             getAriaValueText={(v: number) => v.toString()}
             valueLabelDisplay='auto'

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useGridContext } from '../../../context/GridProvider';
-import { traverseGrid } from '../api/tree';
+import { mapToTree } from '../api/tree';
 import cx from 'classnames';
 import styles from './Cell.module.css';
 
@@ -17,7 +17,7 @@ type CellProps = {
 
 const Cell = ({ cellValue, cellPosition, grid }: CellProps) => {
   const [cellColor, setCellColor] = useState(
-    cellValue === 1 ? styles.cellFilled : styles.cellBlank,
+    cellValue === 1 ? styles.cellFilled : styles.cellBlank
   );
   const [connectionsCount, setConnectionsCount] = useState('');
 
@@ -43,7 +43,7 @@ const Cell = ({ cellValue, cellPosition, grid }: CellProps) => {
       if (
         connectedNodes.length > 0 &&
         connectedNodes.some(
-          (n) => n.row === cellPosition.row && n.column === cellPosition.column,
+          (n) => n.row === cellPosition.row && n.column === cellPosition.column
         )
       ) {
         setCellColor(styles.cellHover);
@@ -63,9 +63,9 @@ const Cell = ({ cellValue, cellPosition, grid }: CellProps) => {
 
   const handleHover = () => {
     if (cellValue === 1) {
-      const tree = traverseGrid(grid, {
+      const tree = mapToTree(grid, {
         row: cellPosition.row,
-        column: cellPosition.column,
+        column: cellPosition.column
       });
       setConnectedNodes(tree.nodes);
     } else {
