@@ -51,14 +51,14 @@ export const mapToTree = (grid: Grid, { row, column }: TreeNode): Tree => {
           grid
         )
           .filter(
-            // Filter child nodes if they already exist among tree nodes
+            // Distinct child nodes if they already exist among tree nodes
             (child) =>
               !tree.nodes.some(
                 (node) => node.row === child.row && node.column === child.column
               )
           )
           .forEach((child) => {
-            // Push distinct
+            // Push distinct to children collection
             const exists = children.some(
               (node) => node.row === child.row && node.column === child.column
             );
@@ -71,15 +71,3 @@ export const mapToTree = (grid: Grid, { row, column }: TreeNode): Tree => {
   }
   return tree;
 };
-
-// const grid = [
-//   [0, 0, 0, 0, 1],
-//   [1, 1, 0, 0, 0],
-//   [1, 1, 0, 1, 1],
-//   [0, 0, 0, 0, 0],
-//   [1, 1, 1, 0, 0],
-// ];
-
-// const tree = traverseGrid(grid, { row: 1, column: 0 });
-// console.log(tree.nodes.length);
-// console.log(tree);
