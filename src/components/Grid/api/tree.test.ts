@@ -31,14 +31,14 @@ describe('tree', () => {
   });
 
   it('should traverse itself and set connected nodes to 25 if the grid is full', () => {
-    const emptyGrid = [
+    const fullGrid = [
       [1, 1, 1, 1, 1],
       [1, 1, 1, 1, 1],
       [1, 1, 1, 1, 1],
       [1, 1, 1, 1, 1],
       [1, 1, 1, 1, 1]
     ];
-    const tree = mapToTree(emptyGrid, { row: 0, column: 0 });
+    const tree = mapToTree(fullGrid, { row: 0, column: 0 });
     expect(tree.nodes.length).toBe(25);
   });
 });
